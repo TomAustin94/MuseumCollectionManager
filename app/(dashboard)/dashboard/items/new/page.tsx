@@ -9,10 +9,10 @@ export const dynamic = 'force-dynamic'
 
 export default async function NewItemPage() {
   const profile = await getProfile()
-  if (!profile) redirect('/login')
+  if (!profile) redirect('/auth/login')
 
   if (profile.role === 'viewer') {
-    redirect('/items')
+    redirect('/dashboard/items')
   }
 
   const supabase = createServerClient()
@@ -26,7 +26,7 @@ export default async function NewItemPage() {
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-          <Link href="/items" className="hover:text-slate-800 flex items-center gap-1">
+          <Link href="/dashboard/items" className="hover:text-slate-800 flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" />
             Collection Items
           </Link>

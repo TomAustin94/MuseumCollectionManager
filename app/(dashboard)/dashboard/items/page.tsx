@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function ItemsPage() {
   const profile = await getProfile()
-  if (!profile) redirect('/login')
+  if (!profile) redirect('/auth/login')
 
   const supabase = createServerClient()
 
@@ -37,7 +37,7 @@ export default async function ItemsPage() {
         </div>
         {canCreate && (
           <Button asChild>
-            <Link href="/items/new">
+            <Link href="/dashboard/items/new">
               <Plus className="h-4 w-4 mr-2" />
               New Item
             </Link>

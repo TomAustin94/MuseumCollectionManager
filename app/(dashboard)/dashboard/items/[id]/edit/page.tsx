@@ -13,10 +13,10 @@ interface PageProps {
 
 export default async function EditItemPage({ params }: PageProps) {
   const profile = await getProfile()
-  if (!profile) redirect('/login')
+  if (!profile) redirect('/auth/login')
 
   if (!profile || profile.role === 'viewer') {
-    redirect(`/items/${params.id}`)
+    redirect(`/dashboard/items/${params.id}`)
   }
 
   const supabase = createServerClient()
@@ -33,12 +33,12 @@ export default async function EditItemPage({ params }: PageProps) {
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-          <Link href="/items" className="hover:text-slate-800 flex items-center gap-1">
+          <Link href="/dashboard/items" className="hover:text-slate-800 flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" />
             Collection Items
           </Link>
           <span>/</span>
-          <Link href={`/items/${item.id}`} className="hover:text-slate-800 font-mono">
+          <Link href={`/dashboard/items/${item.id}`} className="hover:text-slate-800 font-mono">
             {item.accession_number}
           </Link>
           <span>/</span>

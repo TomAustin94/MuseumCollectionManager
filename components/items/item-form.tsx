@@ -186,7 +186,7 @@ export function ItemForm({ item, categories, locations, mode }: ItemFormProps) {
 
       const data = await res.json()
       toast.success(mode === 'create' ? 'Item created' : 'Item updated')
-      router.push(`/items/${data.item?.id ?? item?.id}`)
+      router.push(`/dashboard/items/${data.item?.id ?? item?.id}`)
       router.refresh()
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to save item')

@@ -129,7 +129,7 @@ export function ItemsTable({ initialItems, categories, locations, userRole }: It
       header: 'Title',
       cell: ({ row }) => (
         <Link
-          href={`/items/${row.original.id}`}
+          href={`/dashboard/items/${row.original.id}`}
           className="font-medium text-slate-900 hover:text-primary hover:underline line-clamp-2 max-w-xs"
         >
           {row.original.title}
@@ -174,13 +174,13 @@ export function ItemsTable({ initialItems, categories, locations, userRole }: It
       cell: ({ row }) => (
         <div className="flex items-center gap-1">
           <Button variant="ghost" size="icon" asChild>
-            <Link href={`/items/${row.original.id}`} aria-label="View item">
+            <Link href={`/dashboard/items/${row.original.id}`} aria-label="View item">
               <Eye className="h-4 w-4" />
             </Link>
           </Button>
           {canEdit && (
             <Button variant="ghost" size="icon" asChild>
-              <Link href={`/items/${row.original.id}/edit`} aria-label="Edit item">
+              <Link href={`/dashboard/items/${row.original.id}/edit`} aria-label="Edit item">
                 <Pencil className="h-4 w-4" />
               </Link>
             </Button>

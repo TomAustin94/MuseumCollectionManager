@@ -46,7 +46,7 @@ const METHOD_LABELS: Record<string, string> = {
 
 export default async function ItemDetailPage({ params }: PageProps) {
   const profile = await getProfile()
-  if (!profile) redirect('/login')
+  if (!profile) redirect('/auth/login')
 
   const supabase = createServerClient()
 
@@ -78,7 +78,7 @@ export default async function ItemDetailPage({ params }: PageProps) {
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-sm text-slate-500">
-            <Link href="/items" className="hover:text-slate-800 flex items-center gap-1">
+            <Link href="/dashboard/items" className="hover:text-slate-800 flex items-center gap-1">
               <ArrowLeft className="h-3.5 w-3.5" />
               Collection Items
             </Link>
@@ -104,7 +104,7 @@ export default async function ItemDetailPage({ params }: PageProps) {
               currentLocationId={item.location_id}
             />
             <Button asChild variant="outline" size="sm">
-              <Link href={`/items/${item.id}/edit`}>
+              <Link href={`/dashboard/items/${item.id}/edit`}>
                 <Pencil className="h-4 w-4 mr-2" />
                 Edit
               </Link>
