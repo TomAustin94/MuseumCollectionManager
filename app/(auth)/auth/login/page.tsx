@@ -53,8 +53,10 @@ export default function LoginPage() {
         : false
 
     if (hasTOTP) {
+      router.refresh()
       router.push('/auth/mfa-challenge')
     } else {
+      router.refresh()
       router.push('/dashboard/items')
     }
   }
