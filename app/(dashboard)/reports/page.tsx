@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { ReportsDashboard } from '@/components/reports/reports-dashboard'
 
 export default function ReportsPage() {
