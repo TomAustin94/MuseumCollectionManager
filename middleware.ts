@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
 
   // Supabase stores the session in a cookie named sb-<project-ref>-auth-token
   const hasSession = req.cookies.getAll().some(
-    (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
+    (c) => c.name.startsWith('sb-') && c.name.includes('-auth-token')
   )
 
   const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p))
