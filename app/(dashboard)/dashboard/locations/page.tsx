@@ -6,12 +6,11 @@ import { LocationsClient } from '@/components/layout/locations-client'
 
 export default async function LocationsPage() {
   const supabase = createServerClient()
-  const profile = await getProfile()
 
-  const { data: locations } = await supabase
-    .from('locations')
-    .select('*')
-    .order('name')
+  const [profile, { data: locations }] = await Promise.all([
+    getProfile(),
+    supabase.from('locations').select('*').order('name'),
+  ])
 
   const canEdit = profile?.role === 'editor' || profile?.role === 'admin'
 

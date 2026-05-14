@@ -8,19 +8,16 @@ import { ArrowLeft } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export default async function NewItemPage() {
-  const profile = await getProfile()
-  if (!profile) redirect('/auth/login')
-
-  if (profile.role === 'viewer') {
-    redirect('/dashboard/items')
-  }
-
   const supabase = createServerClient()
 
-  const [{ data: categories }, { data: locations }] = await Promise.all([
+  const [profile, { data: categories }, { data: locations }] = await Promise.all([
+    getProfile(),
     supabase.from('categories').select('*').order('name'),
     supabase.from('locations').select('*').order('name'),
   ])
+
+  if (!profile) redirect('/auth/login')
+  if (profile.role === 'viewer') redirect('/dashboard/items')
 
   return (
     <div className="space-y-6">

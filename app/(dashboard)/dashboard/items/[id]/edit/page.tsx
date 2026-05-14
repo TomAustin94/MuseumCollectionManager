@@ -12,20 +12,17 @@ interface PageProps {
 }
 
 export default async function EditItemPage({ params }: PageProps) {
-  const profile = await getProfile()
-  if (!profile) redirect('/auth/login')
-
-  if (!profile || profile.role === 'viewer') {
-    redirect(`/dashboard/items/${params.id}`)
-  }
-
   const supabase = createServerClient()
 
-  const [{ data: item }, { data: categories }, { data: locations }] = await Promise.all([
+  const [profile, { data: item }, { data: categories }, { data: locations }] = await Promise.all([
+    getProfile(),
     supabase.from('items').select('*').eq('id', params.id).single(),
     supabase.from('categories').select('*').order('name'),
     supabase.from('locations').select('*').order('name'),
   ])
+
+  if (!profile) redirect('/auth/login')
+  if (profile.role === 'viewer') redirect(`/dashboard/items/${params.id}`)
 
   if (!item) notFound()
 

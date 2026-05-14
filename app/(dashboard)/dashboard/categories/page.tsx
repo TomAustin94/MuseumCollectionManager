@@ -6,12 +6,11 @@ import { CategoriesClient } from '@/components/layout/categories-client'
 
 export default async function CategoriesPage() {
   const supabase = createServerClient()
-  const profile = await getProfile()
 
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name')
+  const [profile, { data: categories }] = await Promise.all([
+    getProfile(),
+    supabase.from('categories').select('*').order('name'),
+  ])
 
   const canEdit = profile?.role === 'editor' || profile?.role === 'admin'
 

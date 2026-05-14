@@ -9,12 +9,10 @@ import { Plus } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export default async function ItemsPage() {
-  const profile = await getProfile()
-  if (!profile) redirect('/auth/login')
-
   const supabase = createServerClient()
 
-  const [{ data: items }, { data: categories }, { data: locations }] = await Promise.all([
+  const [profile, { data: items }, { data: categories }, { data: locations }] = await Promise.all([
+    getProfile(),
     supabase
       .from('items')
       .select('*, categories(id, name), locations(id, name, type)')
@@ -23,6 +21,8 @@ export default async function ItemsPage() {
     supabase.from('categories').select('*').order('name'),
     supabase.from('locations').select('*').order('name'),
   ])
+
+  if (!profile) redirect('/auth/login')
 
   const canCreate = profile.role === 'editor' || profile.role === 'admin'
 

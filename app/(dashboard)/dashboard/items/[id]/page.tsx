@@ -45,12 +45,10 @@ const METHOD_LABELS: Record<string, string> = {
 }
 
 export default async function ItemDetailPage({ params }: PageProps) {
-  const profile = await getProfile()
-  if (!profile) redirect('/auth/login')
-
   const supabase = createServerClient()
 
-  const [{ data: item }, { data: auditLogs }] = await Promise.all([
+  const [profile, { data: item }, { data: auditLogs }] = await Promise.all([
+    getProfile(),
     supabase
       .from('items')
       .select('*, categories(id, name), locations(id, name, type)')
@@ -65,9 +63,10 @@ export default async function ItemDetailPage({ params }: PageProps) {
       .limit(50),
   ])
 
+  if (!profile) redirect('/auth/login')
   if (!item) notFound()
 
-  const canEdit = (profile?.role === 'editor' || profile?.role === 'admin') ?? false
+  const canEdit = profile.role === 'editor' || profile.role === 'admin'
 
   const category = (item as any).categories as { id: string; name: string } | null
   const location = (item as any).locations as { id: string; name: string; type: string } | null

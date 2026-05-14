@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useTransition } from 'react'
+import { useState, useEffect, useRef, useCallback, useTransition } from 'react'
 import Link from 'next/link'
 import {
   useReactTable,
@@ -73,6 +73,7 @@ export function ItemsTable({ initialItems, categories, locations, userRole }: It
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: PAGE_SIZE })
   const [isPending, startTransition] = useTransition()
   const [isExporting, setIsExporting] = useState(false)
+  const skipInitialFetch = useRef(true)
 
   const debouncedSearch = useDebounce(search, 400)
 
@@ -96,6 +97,10 @@ export function ItemsTable({ initialItems, categories, locations, userRole }: It
   )
 
   useEffect(() => {
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false
+      return
+    }
     startTransition(async () => {
       try {
         const res = await fetch(`/api/items?${buildQueryString()}`)

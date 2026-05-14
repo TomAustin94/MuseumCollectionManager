@@ -6,15 +6,14 @@ import { createServerClient } from '@/lib/supabase/server'
 import { AuditLogClient } from '@/components/layout/audit-log-client'
 
 export default async function AuditPage() {
-  const profile = await getProfile()
-  if (profile?.role !== 'admin') redirect('/dashboard/items')
-
   const supabase = createServerClient()
-  const { data: logs } = await supabase
-    .from('audit_log')
-    .select('*')
-    .order('changed_at', { ascending: false })
-    .limit(200)
+
+  const [profile, { data: logs }] = await Promise.all([
+    getProfile(),
+    supabase.from('audit_log').select('*').order('changed_at', { ascending: false }).limit(200),
+  ])
+
+  if (profile?.role !== 'admin') redirect('/dashboard/items')
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">

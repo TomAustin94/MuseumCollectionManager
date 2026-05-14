@@ -1,7 +1,8 @@
+import { cache } from 'react'
 import { createServerClient } from '@/lib/supabase/server'
 import type { Profile } from '@/lib/supabase/types'
 
-export async function getProfile(): Promise<Profile | null> {
+export const getProfile = cache(async (): Promise<Profile | null> => {
   const supabase = createServerClient()
   const {
     data: { user },
@@ -15,7 +16,7 @@ export async function getProfile(): Promise<Profile | null> {
     .single()
 
   return data
-}
+})
 
 export async function requireRole(
   minRole: 'viewer' | 'editor' | 'admin'
