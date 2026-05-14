@@ -48,6 +48,7 @@ export default function RegisterPage() {
       password: values.password,
       options: {
         data: { full_name: values.full_name },
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
       },
     })
 
