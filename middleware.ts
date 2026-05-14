@@ -2,18 +2,15 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 const PROTECTED_PATHS = ['/dashboard']
-const AUTH_PATHS = ['/auth/login', '/auth/register']
 
 export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
-  // Supabase stores the session in a cookie named sb-<project-ref>-auth-token
   const hasSession = req.cookies.getAll().some(
     (c) => c.name.startsWith('sb-') && c.name.includes('-auth-token')
   )
 
   const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p))
-  const isAuthPage = AUTH_PATHS.some((p) => pathname.startsWith(p))
 
   let res: NextResponse
 
@@ -21,8 +18,6 @@ export function middleware(req: NextRequest) {
     const loginUrl = new URL('/auth/login', req.url)
     loginUrl.searchParams.set('redirectTo', pathname)
     res = NextResponse.redirect(loginUrl)
-  } else if (isAuthPage && hasSession) {
-    res = NextResponse.redirect(new URL('/dashboard/items', req.url))
   } else {
     res = NextResponse.next()
   }
