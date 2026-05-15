@@ -12,7 +12,10 @@ export default async function DashboardLayout({
   children: ReactNode
 }) {
   const profile = await getProfile()
-  if (!profile) redirect('/auth/login')
+  if (!profile) {
+    console.warn('[DashboardLayout] no profile — redirecting to login')
+    redirect('/auth/login')
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50">

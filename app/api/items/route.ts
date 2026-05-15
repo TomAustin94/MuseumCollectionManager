@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
   } = await supabase.auth.getSession()
 
   if (!session) {
+    console.warn('[GET /api/items] no session')
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -112,6 +113,7 @@ export async function POST(request: NextRequest) {
   } = await supabase.auth.getSession()
 
   if (!session) {
+    console.warn('[POST /api/items] no session')
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

@@ -6,14 +6,28 @@ export const getProfile = cache(async (): Promise<Profile | null> => {
   const supabase = createServerClient()
   const {
     data: { user },
+    error: authError,
   } = await supabase.auth.getUser()
-  if (!user) return null
 
-  const { data } = await supabase
+  if (authError) {
+    console.error('[getProfile] auth.getUser error:', authError.message, authError.status)
+    return null
+  }
+  if (!user) {
+    console.log('[getProfile] no user in session')
+    return null
+  }
+
+  const { data, error: profileError } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single()
+
+  if (profileError) {
+    console.error('[getProfile] profiles query error:', profileError.message, 'user:', user.id)
+    return null
+  }
 
   return data
 })
